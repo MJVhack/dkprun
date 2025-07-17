@@ -1,0 +1,12 @@
+colorama>=0.4.6
+requests>=2.31.0
+watchdog>=4.0.0
+# Linting & test tools optionnels (pour -lint, -test)
+flake8>=7.0.0
+pylint>=3.1.0
+pytest>=8.2.0
+# Linter JS optionnel (pour -lint sur JS)
+eslint; platform_system != "Windows"  # Installation via npm recommandé pour eslint
+# Pour cloud/deployment (optionnel)
+# heroku; platform_system != "Windows"
+# vercel; platform_system != "Windows"
