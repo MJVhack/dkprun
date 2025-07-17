@@ -5,31 +5,45 @@ Param(
 
 $targetDir = "C:\dkprun"
 
-Write-Host "🚀 Clonage du repo $RepoUrl dans $targetDir"
+Write-Host "Cloning repo $RepoUrl into $targetDir"
 if (Test-Path $targetDir) {
     Remove-Item $targetDir -Recurse -Force
 }
 git clone $RepoUrl $targetDir
 
 if (-not (Test-Path "$targetDir\dkprun.py")) {
-    Write-Host "❌ dkprun.py introuvable dans le repo." -ForegroundColor Red
+    Write-Host "dkprun.py not found in the repo." -ForegroundColor Red
     exit 1
 }
 if (-not (Test-Path "$targetDir\dkprun.bat")) {
-    Write-Host "❌ dkprun.bat introuvable dans le repo." -ForegroundColor Red
+    Write-Host "dkprun.bat not found in the repo." -ForegroundColor Red
     exit 2
 }
 
-Write-Host "✅ Fichiers trouvés dans $targetDir"
+Write-Host "Files found in $targetDir"
 
-# Ajout du dossier au PATH système
+# Add the folder to the system PATH
 $envName = "PATH"
-$envValue = [Environment]::GetEnvironmentVariable($envName, [EnvironmentVariableTarget]::Machine)
-if ($envValue -notlike "*$targetDir*") {
-    Write-Host "🔧 Ajout de $targetDir au PATH Windows..."
-    $newValue = "$envValue;$targetDir"
-    [Environment]::SetEnvironmentVariable($envName, $newValue, [EnvironmentVariableTarget]::Machine)
-    Write-Host "✅ PATH mis à jour (système). Redémarre le terminal pour que les changements soient pris en compte."
+try {
+    $envValue = [Environment]::GetEnvironmentVariable($envName, [EnvironmentVariableTarget]::Machine)
+    if ([string]::IsNullOrEmpty($envValue)) {
+        $newValue = "$targetDir"
+    } else {
+        $newValue = "$envValue;$targetDir"
+    }
+    if ($envValue -notlike "*$targetDir*") {
+        Write-Host "Adding $targetDir to Windows PATH..."
+        [Environment]::SetEnvironmentVariable($envName, $newValue, [EnvironmentVariableTarget]::Machine)
+        Write-Host "PATH updated (system). Restart your terminal to apply the changes."
+    } else {
+        Write-Host "$targetDir is already in PATH."
+    }
+} catch {
+    Write-Host "Error while updating system PATH. Please run this script as administrator." -ForegroundColor Red
+    exit 3
+}
+
+Write-Host "Installation complete!"
 } else {
     Write-Host "ℹ️ $targetDir est déjà dans le PATH."
 }
