@@ -44,8 +44,3 @@ try {
 }
 
 Write-Host "Installation complete!"
-} else {
-    Write-Host "ℹ️ $targetDir est déjà dans le PATH."
-}
-
-Write-Host "✅ Installation terminée !"
