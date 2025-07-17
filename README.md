@@ -112,6 +112,7 @@ $ dkprun -takeserver secret.txt -ip 192.168.1.42 -psswd azerty
 * L’installation automatique de modules est supportée pour Python/Node uniquement
 * Les fichiers HTML s’ouvrent dans le navigateur
 * Les commandes de transfert supportent `-psswd` pour la sécurité (transmis en clair en LAN)
+* Ce script a était pensé pour Windows et donc peu d'outils fonctionnent sur d'autre plateforme tel que MacOS ou Linux.
 
 ---
 
